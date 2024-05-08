@@ -2,6 +2,8 @@ package org.aymendev.bankaccountservice1.entities;
 
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,6 +21,7 @@ public class BankAccount {
     private Date createdAt;
     private double balance;
     private String currency;
+    @Enumerated(EnumType.STRING)
     private AccountType type;
 
 }
