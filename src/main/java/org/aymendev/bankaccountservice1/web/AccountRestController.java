@@ -1,7 +1,11 @@
 package org.aymendev.bankaccountservice1.web;
 
+import org.aymendev.bankaccountservice1.dto.BankAccountRequestDTO;
+import org.aymendev.bankaccountservice1.dto.BankAccountResponseDTO;
 import org.aymendev.bankaccountservice1.entities.BankAccount;
+import org.aymendev.bankaccountservice1.mappers.AccountMapper;
 import org.aymendev.bankaccountservice1.repositories.BankAccountRepository;
+import org.aymendev.bankaccountservice1.service.AccountService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -12,9 +16,13 @@ import java.util.UUID;
 @RequestMapping("/api")
 public class AccountRestController {
     private BankAccountRepository bankAccountRepository;
+    private AccountService accountService;
+    private AccountMapper accountMapper;
 
-    public AccountRestController(BankAccountRepository bankAccountRepository) {
+    public AccountRestController(BankAccountRepository bankAccountRepository, AccountService accountService, AccountMapper accountMapper) {
         this.bankAccountRepository = bankAccountRepository;
+        this.accountService = accountService;
+        this.accountMapper = accountMapper;
     }
 
     @GetMapping("/bankAccounts")
@@ -29,9 +37,9 @@ public class AccountRestController {
     }
 
     @PostMapping("/bankAccounts")
-    public BankAccount save(@RequestBody BankAccount bankAccount) {
-        if (bankAccount.getId() == null) bankAccount.setId(UUID.randomUUID().toString());
-        return bankAccountRepository.save(bankAccount);
+    public BankAccountResponseDTO save(@RequestBody BankAccountRequestDTO requestDTO) {
+
+        return accountService.addAccount(requestDTO);
     }
 
     @PutMapping("/bankAccounts/{id}")
